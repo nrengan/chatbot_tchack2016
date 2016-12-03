@@ -4,14 +4,12 @@
 # from twilio.rest import *
 from twilio.rest import TwilioRestClient
 
-def send_text() :
-	print('AAAAA')
+def send_text(send_to_number, text) :
 	# Find these values at https://twilio.com/user/account
 	account_sid = "AC78291078bf12a4f632415fa544390585"
 	auth_token = "4eb792cf644d34acb90db9805b99c60c"
-	print('check 1')
 	client = TwilioRestClient(account_sid, auth_token)
-	print('check 2')	
-	message = client.messages.create(to="+447873124771", from_="+447448450373", body="Hello there!")
-	print('check 3')
+	
+	message = client.messages.create(to=send_to_number, from_="+441172001580", body=text)
+	print(message)
 	
