@@ -1,9 +1,10 @@
 from tokenize import String
-
+import json
 import requests
 
 search_url = "https://api.crystalknows.com/v1/people.json?search[first_name]={}&search[last_name]={}&search" \
              "[deep_search]=true&deep_search=true&form_submitted=false"
+add_person_url = "https://api.crystalknows.com/v1/people/{}add_contact.json"
 
 headers = {"Host": "api.crystalknows.com",
            "Connection": "keep-alive",
@@ -26,4 +27,21 @@ def get_person_data(firstname, secondname):
     r = requests.get(search_url.format(firstname, secondname), headers=headers, proxies={"http": "http://127.0.0.1:8888", "https":"http:127.0.0.1:8888"},verify=r"FiddlerRoot.crt")
     return r
 
-print get_person_data("Joshua", "Richardson")
+def person_query(firstname, secondname):
+    r = requests.get(search_url.format(firstname, secondname), headers=headers)
+    return json.loads(r.content)
+
+
+def person_details(basic_result, index):
+    if len(basic_result["people"]) > index:
+        personDataUri = basic_result["people"][index]["_links"]["self"]
+        r = requests.get(personDataUri, headers=headers)
+        return json.loads(r.content)
+    return None
+
+
+def personality_type(details):
+    return details["person"]["personality"]["disc_type"]["disc"]
+
+
+print personality_type(person_details(person_query("Joshua", "Richardson"), 0))
