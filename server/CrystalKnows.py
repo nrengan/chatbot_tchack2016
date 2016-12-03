@@ -9,7 +9,7 @@ headers = {"Host": "api.crystalknows.com",
            "Connection": "keep-alive",
            "X-App-Version": "0.10.0",
            "X-SDK-Consumer": "crystal-chrome-extension",
-           "X-User-Email": "richardsonjoshua228@gmail.com",
+           "X-User-Email": "leo.josts@gmail.com",
            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",
            "X-SDK-Consumer-Version": "3.6.19",
            "Accept": "application/json, text/plain, */*",
@@ -23,7 +23,7 @@ headers = {"Host": "api.crystalknows.com",
 
 
 def get_person_data(firstname, secondname):
-    r = requests.get(search_url.format(firstname, secondname), headers=headers)
+    r = requests.get(search_url.format(firstname, secondname), headers=headers, proxies={"http": "http://127.0.0.1:8888", "https":"http:127.0.0.1:8888"},verify=r"FiddlerRoot.crt")
     return r
 
 print get_person_data("Joshua", "Richardson")

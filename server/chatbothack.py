@@ -1,21 +1,24 @@
 from flask import *
 
-from RegistrationForm import RegistrationForm
-from flask import Flask
+from flask import Flask, request, send_from_directory
 from flask import render_template
 from twilio_helper import send_text
+import requests
 
-app = Flask(__name__)
-
-
+# set the project root directory as the static folder, you can set others.
+app = Flask(__name__, static_url_path='')
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
 @app.route("/index")
+@app.route("/index.html")
 def index():
-    return render_template('index.html', title="index")
+	data = []
+	return render_template('/index.html', data = data)
+
+@app.route("/register")
+@app.route("/register.html")
+def register_page():
+	data = []
+	return render_template('/register.html', data = data)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -35,6 +38,9 @@ def text_test():
     send_text(exNumber, text)
     return "Done"
 
+@app.route('/<path:path>')
+def send_js(path):
+    return send_from_directory('Webapp', path)
 
 if __name__ == '__main__':
     app.run()
