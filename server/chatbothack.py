@@ -30,6 +30,17 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+@app.route('/sendRequest')
+def create_new_customer(email="test.com"):
+	headers = {
+		'Accept': 'application/json',
+		'Client-id' : 'UDbWPMg0eJ8-_RlC5k7Thw',
+		'App-secret' : 'jvcjbJPm9-TUXBRLf3LK6nDgHsiz9xD6yrjJgPYA5Bg',
+		'Content-Type' : 'application/json'
+	}
+	text = {'data' : {'identifier': email}}
+	r = requests.post('https://www.saltedge.com/api/v3/customers/', headers = headers, data = json.dumps(text) )
+	return r.content
 
 @app.route('/send_text_test')
 def text_test():
