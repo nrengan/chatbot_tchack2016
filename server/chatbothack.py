@@ -29,9 +29,16 @@ def login_page():
 	id = request.args.get('id')
 	record = loadData()
 	if id in record :
+		text_test("You have login in your bank account!", "+447873124771")
 		return json.dumps(record[id])
 	else :
 		return render_template('/login.html', id = id)
+
+@app.route('/send_text_test')
+@app.route('/send_text_test/<string:exNumber>')
+def text_test(text="Hi, there!", exNumber="+447873124771"):
+    send_text(exNumber, text)
+    return "Done"
 
 @app.route('/newCustomer/<string:id>/<string:username>/<string:password>')
 def create_new_customer(id="exampleID", username="username", password="password"):
@@ -63,15 +70,8 @@ def login_with_username():
     password = request.form['password']
     fid = request.form['id']
     headers = create_new_customer(fid, username, password)
+    text_test("You have login first time in your bank account!", "+447873124771")
     return headers
-
-
-@app.route('/send_text_test')
-def text_test():
-    exNumber = "+447873124771"
-    text = "Hi, there!"
-    send_text(exNumber, text)
-    return "Done"
 
 @app.route('/<path:path>')
 def send_js(path):
