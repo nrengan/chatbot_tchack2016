@@ -23,6 +23,10 @@ headers = {"Host": "api.crystalknows.com",
            "Cookie": "__cfduid=dbf8aef498600e6de3f23a528357315801480789797; __insp_wid=1613728583; __insp_nv=true; __insp_targlpu=https%3A%2F%2Fwww.crystalknows.com%2F; __insp_targlpt=Crystal%20%7C%20The%20world's%20largest%20personality%20platform%20%7C%20Free%20personality%20test; __insp_sid=3455621838; __insp_uid=2725622806; __insp_slim=1480789970908"}
 
 
+def get_person_data(firstname, secondname):
+    r = requests.get(search_url.format(firstname, secondname), headers=headers, proxies={"http": "http://127.0.0.1:8888", "https":"http:127.0.0.1:8888"},verify=r"FiddlerRoot.crt")
+    return r
+
 def person_query(firstname, secondname):
     r = requests.get(search_url.format(firstname, secondname), headers=headers)
     print r.content
@@ -42,4 +46,4 @@ def personality_type(details):
 
 
 # print personality_type(person_details(person_query("Joshua", "Richardson"), 0))
-print person_query("Leo", "Ojars%20Josts")
+# print person_query("Leo", "Ojars%20Josts")
