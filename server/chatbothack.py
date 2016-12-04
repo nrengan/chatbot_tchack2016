@@ -3,8 +3,8 @@ from flask import *
 from twilio_helper import send_text
 from saltedge_helper import *
 from database import *
-from personality_insights import *
-from tone_analyzer import *
+# from personality_insights import *
+# from tone_analyzer import *
 from AlchemyLanguageV1 import *
 import unicodedata
 
