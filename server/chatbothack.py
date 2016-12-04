@@ -153,7 +153,7 @@ def generate_link():
                     "text": "Great, we've generated a custom link for you to log in to your bank's website!",
                     "buttons": [{
                          "type" : "web_url",
-                         "url" : "http://178.62.125.45/login?id=" + uid,
+                         "url" : "http://finvestbot.online/login?id=" + uid,
                          "title" : "Log in now"
                 },],
                 },
