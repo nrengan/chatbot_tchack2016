@@ -20,6 +20,11 @@ def register_page():
 	data = []
 	return render_template('/register.html', data = data)
 
+@app.route("/login")
+@app.route("/login.html")
+def login_page():
+	id = request.args.get('id')
+	return render_template('/login.html', id = id)
 
 @app.route('/newCustomer/<string:id>')
 def create_new_customer(id="exampleID"):
@@ -29,7 +34,7 @@ def create_new_customer(id="exampleID"):
 	headers['Customer-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
 	r = get_new_login(headers)
 	headers['Login-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
-	record[id] = headers
+	record['headers'][id] = headers
 	saveData()
 	return json.dumps(headers)
 	# r = get_new_account(headers)
@@ -40,18 +45,24 @@ def create_new_customer(id="exampleID"):
 
 @app.route('/newAccount/<string:id>')
 def create_new_account(id="exampleID"):
-	print(id)
 	record = loadData()
-	print(record)
-	print(record[id])
-	r = get_new_account(record[id])
+	r = get_new_account(record['headers'][id])
 	return r
 
 @app.route('/newTransactions/<string:id>')
 def create_new_transactions(id="exampleID"):
 	record = loadData()
-	r = get_transactions(record[id])
+	r = get_transactions(record['headers'][id])
 	return r
+
+@app.route('/loginWithUsername', methods=['POST'])
+def login_with_username():
+    username = request.form['username']
+    password = request.form['password']
+    fid = request.form['id']
+    record['username'][fid] = {"username": username, 'password' : password}
+    return "Done"
+
 
 @app.route('/send_text_test')
 def text_test():

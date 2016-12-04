@@ -1,6 +1,6 @@
 import pickle
 
-record = {}
+record = {'headers' : {}, 'username' : {}}
 def loadData():
 	record = pickle.load( open( "save.plk", "rb" ))
 	return record

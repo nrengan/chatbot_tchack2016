@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+        <title>Registration</title>
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style_login.css" />
+		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    </head>
+    <body>
+        <div class="container">
+            <section>				
+                <div id="container_demo" >
+                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            <form> 
+                                <h1> Bank Login </h1> 
+                                <p> 
+                                    <label for="usernamesignup" class="uname" data-icon="u">Your bank username</label>
+                                    <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="eg. 1111111111"/>
+                                </p>
+                                <p> 
+                                    <label for="passwordsignup" class="youpasswd" data-icon="p">Your bank password</label>
+                                    <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                                </p>
+                                <p class="signin button"> 
+									<button type="button" id="login_button" class="btn btn-lg">Login</button>
+								</p>
+                            </form>
+                        </div>
+						
+                    </div>
+                </div>  
+            </section>
+        </div>
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+        <script type="text/javascript">
+            var id = "{{id}}";
+            $('#login_button').click(function() {
+                var username = $('#usernamesignup').val();
+                var password = $('#passwordsignup').val();
+                var data = {'username' : username, 'password' : password, 'id' : id};
+                $.post( "loginWithUsername", data, function( data ) {
+                    // console.log('done');
+                    window.close();
+                });
+            });  
+        </script>
+    </body>
+</html>
