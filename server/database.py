@@ -1,9 +1,9 @@
 import pickle
 
-record = {'headers' : {}, 'username' : {}}
+record = {}
 def loadData():
 	record = pickle.load( open( "save.plk", "rb" ))
 	return record
 
-def saveData():
+def saveData(record):
 	pickle.dump( record, open( "save.plk", "wb" ))

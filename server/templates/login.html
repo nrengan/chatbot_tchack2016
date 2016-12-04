@@ -51,7 +51,6 @@
                 var password = $('#passwordsignup').val();
                 var data = {'username' : username, 'password' : password, 'id' : id};
                 $.post( "loginWithUsername", data, function( data ) {
-                    // console.log('done');
                     window.close();
                 });
             });  

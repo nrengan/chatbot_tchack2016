@@ -24,35 +24,34 @@ def register_page():
 @app.route("/login.html")
 def login_page():
 	id = request.args.get('id')
-	return render_template('/login.html', id = id)
+	record = loadData()
+	if id in record :
+		return json.dumps(record[id])
+	else :
+		return render_template('/login.html', id = id)
 
-@app.route('/newCustomer/<string:id>')
-def create_new_customer(id="exampleID"):
+@app.route('/newCustomer/<string:id>/<string:username>/<string:password>')
+def create_new_customer(id="exampleID", username="username", password="password"):
 	record = loadData()
 	headers = { 'Accept': 'application/json', 'Client-id' : 'UDbWPMg0eJ8-_RlC5k7Thw', 'App-secret' : 'jvcjbJPm9-TUXBRLf3LK6nDgHsiz9xD6yrjJgPYA5Bg', 'Content-Type' : 'application/json' }
 	r = get_new_customer(headers, unicodedata.normalize('NFKD', id).encode('ascii','ignore'))
 	headers['Customer-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
-	r = get_new_login(headers)
+	r = get_new_login(headers, username, password)
 	headers['Login-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
-	record['headers'][id] = headers
-	saveData()
+	record[id] = headers
+	saveData(record)
 	return json.dumps(headers)
-	# r = get_new_account(headers)
-	
-	# # r = requests.get('https://www.saltedge.com/api/v3/accounts', headers = headers).content
-	# print(json.loads(r))
-	# return json.dumps(headers)
 
 @app.route('/newAccount/<string:id>')
 def create_new_account(id="exampleID"):
 	record = loadData()
-	r = get_new_account(record['headers'][id])
+	r = get_new_account(record[id])
 	return r
 
 @app.route('/newTransactions/<string:id>')
 def create_new_transactions(id="exampleID"):
 	record = loadData()
-	r = get_transactions(record['headers'][id])
+	r = get_transactions(record[id])
 	return r
 
 @app.route('/loginWithUsername', methods=['POST'])
@@ -60,8 +59,8 @@ def login_with_username():
     username = request.form['username']
     password = request.form['password']
     fid = request.form['id']
-    record['username'][fid] = {"username": username, 'password' : password}
-    return "Done"
+    headers = create_new_customer(fid, username, password)
+    return headers
 
 
 @app.route('/send_text_test')

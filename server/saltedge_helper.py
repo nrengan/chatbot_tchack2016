@@ -6,8 +6,8 @@ def get_new_customer(headers, id):
 	text = {"data" : {"identifier" : id}}
 	return json.loads(requests.post('https://www.saltedge.com/api/v3/customers/', headers = headers, data = json.dumps(text)).content)
 
-def get_new_login(headers):
-	text = { "data": { "country_code": "XF", "provider_code": "fakebank_simple_xf", "fetch_type": "recent", "credentials": { "login": "username", "password": "secret" }}}
+def get_new_login(headers, username, password):
+	text = { "data": { "country_code": "XF", "provider_code": "fakebank_simple_xf", "fetch_type": "recent", "credentials": { "login": username, "password": password }}}
 	return json.loads(requests.post('https://www.saltedge.com/api/v3/login', headers = headers, data = json.dumps(text)).content)
 
 def get_new_account(headers):
