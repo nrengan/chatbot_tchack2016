@@ -3,6 +3,9 @@ from flask import *
 from flask import Flask, request, send_from_directory
 from flask import render_template
 from twilio_helper import send_text
+from saltedge_helper import *
+from database import *
+import unicodedata
 import requests
 
 # set the project root directory as the static folder, you can set others.
@@ -30,17 +33,37 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-@app.route('/sendRequest')
-def create_new_customer(email="test.com"):
-	headers = {
-		'Accept': 'application/json',
-		'Client-id' : 'UDbWPMg0eJ8-_RlC5k7Thw',
-		'App-secret' : 'jvcjbJPm9-TUXBRLf3LK6nDgHsiz9xD6yrjJgPYA5Bg',
-		'Content-Type' : 'application/json'
-	}
-	text = {'data' : {'identifier': email}}
-	r = requests.post('https://www.saltedge.com/api/v3/customers/', headers = headers, data = json.dumps(text) )
-	return r.content
+@app.route('/newCustomer/<string:id>')
+def create_new_customer(id="exampleID"):
+	record = loadData()
+	headers = { 'Accept': 'application/json', 'Client-id' : 'UDbWPMg0eJ8-_RlC5k7Thw', 'App-secret' : 'jvcjbJPm9-TUXBRLf3LK6nDgHsiz9xD6yrjJgPYA5Bg', 'Content-Type' : 'application/json' }
+	r = get_new_customer(headers, unicodedata.normalize('NFKD', id).encode('ascii','ignore'))
+	headers['Customer-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
+	r = get_new_login(headers)
+	headers['Login-secret'] = unicodedata.normalize('NFKD', r['data']['secret']).encode('ascii','ignore')
+	record[id] = headers
+	saveData()
+	return json.dumps(headers)
+	# r = get_new_account(headers)
+	
+	# # r = requests.get('https://www.saltedge.com/api/v3/accounts', headers = headers).content
+	# print(json.loads(r))
+	# return json.dumps(headers)
+
+@app.route('/newAccount/<string:id>')
+def create_new_account(id="exampleID"):
+	print(id)
+	record = loadData()
+	print(record)
+	print(record[id])
+	r = get_new_account(record[id])
+	return r
+
+@app.route('/newTransactions/<string:id>')
+def create_new_transactions(id="exampleID"):
+	record = loadData()
+	r = get_transactions(record[id])
+	return r
 
 @app.route('/send_text_test')
 def text_test():
