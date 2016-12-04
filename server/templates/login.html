@@ -51,7 +51,11 @@
                 var password = $('#passwordsignup').val();
                 var data = {'username' : username, 'password' : password, 'id' : id};
                 $.post( "loginWithUsername", data, function( data ) {
-                    window.close();
+                     window.close();
+                     alert("Login successful, please close this page");
+
+{#                    open(location, '_self').close();#}
+
                 });
             });  
         </script>

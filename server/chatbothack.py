@@ -70,6 +70,7 @@ def login_with_username():
     password = request.form['password']
     fid = request.form['id']
     headers = create_new_customer(fid, username, password)
+    # send request to chatfuel to continue the conversation
     text_test("You have login first time in your bank account!", "+447873124771")
     return headers
 
@@ -86,8 +87,9 @@ potential_users = {}
 def linked_in_check():
     uid = request.args.get('uid')
     if uid not in users:
-        fname = request.args.get('fname')
-        pers_details = person_details(person_query(fname if fname not in lst else lst[fname][0], request.args.get('lname') if fname not in lst else lst[fname][1]), 0)
+
+
+        pers_details = person_details(person_query(request.args.get('fname'), request.args.get('lname')), 0)
 
         response = {"messages": [
             {
@@ -136,6 +138,33 @@ def linked_in_confirm():
     ]}
 
     return jsonify(**response)
+
+
+@app.route("/generatelink")
+def generate_link():
+    uid = request.args.get('uid')
+
+    response = {"messages": [
+        {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Great, we've generated a custom link for you to log in to your bank's website!",
+                    "buttons": [{
+                         "type" : "web_url",
+                         "url" : "https://2d0158a6.ngrok.io/login?id=" + uid,
+                         "title" : "Log in now"
+                },],
+                },
+
+            }
+
+        }
+    ]}
+    return jsonify(**response)
+
+# endregion
 
 @app.route('/connecttowatson')
 def ConnectToWatson(text=None):
