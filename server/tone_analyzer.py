@@ -7,10 +7,8 @@
 import requests
 import json
 from watson_developer_cloud import ToneAnalyzerV3
-
-
  
-def analyze_tone(text):
+def getToneAnalize(text):
 
     tone_analyzer = ToneAnalyzerV3(
         username='fb3a4eef-3535-4ea1-9920-5f944f536501',
