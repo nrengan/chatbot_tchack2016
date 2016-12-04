@@ -25,6 +25,7 @@ headers = {"Host": "api.crystalknows.com",
 
 def person_query(firstname, secondname):
     r = requests.get(search_url.format(firstname, secondname), headers=headers)
+    print r.content
     return json.loads(r.content)
 
 
@@ -40,4 +41,5 @@ def personality_type(details):
     return details["person"]["personality"]["disc_type"]["disc"]
 
 
-print personality_type(person_details(person_query("Joshua", "Richardson"), 0))
+# print personality_type(person_details(person_query("Joshua", "Richardson"), 0))
+print person_query("Leo", "Ojars%20Josts")
